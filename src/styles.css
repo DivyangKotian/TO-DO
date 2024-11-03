@@ -1,0 +1,71 @@
+*{
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+body{
+    display: grid;
+    max-height: 100vh;
+    grid-template-columns: 1fr 4fr;
+    grid-template-rows: 1fr 5fr 1fr;
+    grid-template-areas: "sidebar maincontent"
+                            "sidebar maincontent"
+                            "footer footer";
+}
+
+.side-bar{
+    grid-area: sidebar;
+    background-color: aqua;
+    height: calc(100vh - 40px);
+}
+
+.main-content{
+    grid-area: maincontent;
+    background-color: blanchedalmond;
+}
+
+.task {
+    padding: 10px;
+    border: 1px solid #fff;
+    margin: 10px 0;
+    background-color: white;
+
+}
+
+
+/*footer*/
+.footer{
+    background-color: red;
+    grid-area: footer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    font-size: 14px;
+    padding: 5px;
+    text-shadow: 0 0 7px #ffffff;
+    font-family: 'Bellota Text', cursive;
+    text-align: center;
+    color: #ffffff;
+    height: 40px; /* Ensure enough height for footer content */
+    position: relative;
+}
+
+/* Footer icon styling */
+.fa-github {
+    color: var(--primary-dark);
+    transition: transform 0.3s ease-in-out;
+}
+
+.fa-github:hover {
+    transform: rotate(360deg) scale(1.6);
+}
+
+
+a {
+  text-decoration: none; /* Remove underline */
+  color: inherit; /* Inherit the text color from the parent element */
+}
+
