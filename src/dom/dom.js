@@ -1,5 +1,7 @@
+import { TaskManager } from "../functions/taskManager";
+
 class UIElements {
-    createEditButton() {
+    createEditButton(task, index, onEdit) {
         const editBtn = document.createElement('button');
         editBtn.setAttribute('class', 'edit-button');
         const editIcon = document.createElement('i');
@@ -7,31 +9,34 @@ class UIElements {
         editBtn.appendChild(editIcon);
 
         editBtn.addEventListener('click', () => {
-            // Edit button functionality here
+            // Call the edit function and pass task and index
+            onEdit(task, index);
         });
         
         return editBtn;
     }
 
-    createDeleteButton() {
+    createDeleteButton(taskManager, index, renderTasksCallback) {
         const deleteBtn = document.createElement('button');
         deleteBtn.setAttribute('class', 'delete-button');
         const deleteIcon = document.createElement('i');
         deleteIcon.setAttribute('class', 'fa-solid fa-trash');
         deleteBtn.appendChild(deleteIcon);
-
+    
         deleteBtn.addEventListener('click', () => {
-            // Delete button functionality here
+            taskManager.deleteTask(index);
+            renderTasksCallback(taskManager.getAllTasks());
         });
-
+    
         return deleteBtn;
     }
 }
 
-class taskRender {
-    constructor(containerId) {
+class TaskRender {
+    constructor(containerId, taskManager) {
         this.container = document.getElementById(containerId);
-        this.uiElements= new UIElements();
+        this.taskManager = taskManager; 
+        this.uiElements = new UIElements();
     }
 
     createTaskElements(tag, textContent, className) {
@@ -39,6 +44,13 @@ class taskRender {
         element.textContent = textContent;
         element.className = className;
         return element;
+    }
+
+    createTaskTitle(textContent, className) {
+        const taskTitle = document.createElement('h3');
+        taskTitle.textContent = textContent.toUpperCase();
+        taskTitle.setAttribute('class', className);
+        return taskTitle;
     }
 
     createTaskContainer(task, index) {
@@ -64,7 +76,7 @@ class taskRender {
         const textWrapper = document.createElement('div');
         textWrapper.className = 'text-wrapper';
 
-        textWrapper.appendChild(this.createTaskElements('h3', task.title, 'text-element task-title'));
+        textWrapper.appendChild(this.createTaskTitle(task.title, 'text-element task-title'));
         textWrapper.appendChild(this.createTaskElements('span', task.description, 'task-description'));
         textWrapper.appendChild(this.createTaskElements('span', task.priority, 'task-priority'));
         textWrapper.appendChild(this.createTaskElements('span', task.dueDate.toLocaleDateString(), 'task-date'));
@@ -75,14 +87,41 @@ class taskRender {
         doneWrapper.appendChild(doneLabel);
 
         taskContainer.appendChild(doneWrapper);
-        taskContainer.appendChild(this.uiElements.createEditButton());
-        taskContainer.appendChild(this.uiElements.createDeleteButton());
+        taskContainer.appendChild(this.uiElements.createEditButton(task, index, this.onEdit.bind(this))); 
+        taskContainer.appendChild(this.uiElements.createDeleteButton(this.taskManager, index, this.renderTasks.bind(this)));
 
         return taskContainer;
     }
 
-    renderTasks(tasks) {
-        this.container.textContent = ""; // Clear previous content
+    onEdit(task, index) {
+        const modal = document.getElementById('modal');
+        // Populate modal with task details
+        document.getElementById('task-title').value = task.title;
+        document.getElementById('task-description').value = task.description;
+        document.getElementById('project-tag').value=task.project;
+        document.getElementById('priority-slider').value = task.priority; // Assume you have a way to handle this
+        document.querySelector('.due-date-input').value = task.dueDate.toISOString().split('T')[0]; // Set due date input
+        modal.classList.add('visible');
+
+        // Handle form submission for editing (You need to implement this part)
+        const form = document.querySelector('.form-add-task');
+        form.onsubmit = (e) => {
+            e.preventDefault();
+            task.title = form['task-title'].value;
+            task.description = form['task-description'].value;
+            task.priority = form['priority-slider'].value;
+            task.dueDate = new Date(form['due-date'].value);
+            task.project=form['project-tag'].value;
+            this.taskManager.updateTask(index, task);
+
+            this.renderTasks(this.taskManager.getAllTasks());
+
+            modal.classList.remove('visible'); // Close modal after editing
+        };
+    }
+
+  renderTasks(tasks) {
+        this.container.textContent = ""; 
 
         tasks.forEach((task, index) => {
             const taskContainer = this.createTaskContainer(task, index);
@@ -92,4 +131,4 @@ class taskRender {
 }
 
 
-export{taskRender}
+export{TaskRender}

@@ -7,6 +7,18 @@ class TaskManager {
         this.tasks.push(task);
     }
 
+    getTaskToday() {
+        const today = new Date();
+        return this.tasks.filter(task => {
+            const taskDate = new Date(task.dueDate);
+            return (
+                taskDate.getDate() === today.getDate() &&
+                taskDate.getMonth() === today.getMonth() &&
+                taskDate.getFullYear() === today.getFullYear()
+            );
+        });
+    }
+
     getTasksDueThisWeek() {
         const today = new Date();
         const startOfWeek = new Date(today);
@@ -44,6 +56,26 @@ class TaskManager {
 
     getTasksByProject(project) {
         return this.tasks.filter(task => task.project === project);
+    }
+
+    getAllTasks(){
+        return this.tasks;
+    }
+
+    deleteTask(index) {
+        if (index >= 0 && index < this.tasks.length) {
+            this.tasks.splice(index, 1);
+        } else {
+            console.error('Invalid index. Task not deleted.');
+        }
+    }
+    
+    updateTask(index, updatedTask) {
+        if (index >= 0 && index < this.tasks.length) {
+            this.tasks[index] = updatedTask;
+        } else {
+            console.error('Invalid index. Task not updated.');
+        }
     }
 }
 

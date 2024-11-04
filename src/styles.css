@@ -357,3 +357,11 @@ a {
     color: var(--disabled);
   }
   
+  .modal {
+    display: none;
+    /* Other modal styling */
+}
+
+.modal.visible {
+    display: block;
+}

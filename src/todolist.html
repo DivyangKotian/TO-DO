@@ -13,6 +13,7 @@
 </head>
 <body>
     <div class="side-bar">
+        <button id ="btn-add-task" class="new-task"> New Task</button>
         <ul class="time-based">
             <li class="all-tasks">All Tasks</li>
             <li class="today">Today</li>
@@ -25,19 +26,71 @@
     </div>
     <div class="main-content" id="content"></div>
 
+    
+    
+    
     <div class="footer">  
         <footer class="footer">
             <p>
                 Copyright ©
-            <script>
+                <script>
                     document.write(new Date().getFullYear())
-             </script>
+                    </script>
                     Divyang Kotian
-            </p>
-            <a href="https://github.com/DivyangKotian" target="_blank">
-                <i class="fab fa-github"></i>
-            </a>
-        </footer>
-    </div>   
-</body>
-</html>
+                </p>
+                <a href="https://github.com/DivyangKotian" target="_blank">
+                    <i class="fab fa-github"></i>
+                </a>
+            </footer>
+        </div>   
+        <!-- modal -->
+     <div class="modal" id="modal">
+         <div class="modal-content">
+             <span class="span-close" id="close-modal">&times;</span>
+             <div class="modal-form">
+                 <h1 class="form-title">Add new Task</h1>
+                 <form class="form-add-task">
+                     <div class="modal-input-field">
+                         <label for="task-title">Title: </label>
+                         <input type="text" 
+                             name="task-title" 
+                             id="task-title" 
+                             class="modal-form-input" 
+                             required />
+                     </div>
+                     <div class="modal-input-field">
+                         <label for="task-description">Description:</label>
+                         <input type="text" 
+                             name="task-description" 
+                             id="task-description" 
+                             class="modal-form-input"/>
+                     </div>
+                     <div class="modal-input-field">
+                         <label for="project-tag">Project:</label>
+                         <input type="text" 
+                             name="project-tag" 
+                             id="project-tag" 
+                             value="General"
+                             placeholder="default : General" 
+                             class="modal-form-input"/>
+                     </div>
+                     <div class="modal-input-field">
+                         <label for="priority-slider">Set priority:</label>
+                         <div class="priority-slider">
+                             <input type="range" id="priority-slider" min="1" max="3" value="1">
+                             <span id="priority-value">Low</span>
+                         </div>
+                     </div>
+                     <div class="modal-input-field">
+                         <label for="due-date">Due Date:</label>
+                         <input type="date" id="task-due-date" class="due-date-input" /> <!-- Added ID here -->
+                     </div>
+                     <div class="submit-modal-form">
+                         <button type="submit" class="submit-modal-btn btn" id="btn-submit-task">Submit</button> <!-- Added text to button -->
+                     </div>
+                 </form>
+             </div>
+         </div>
+     </div>
+    </body>
+    </html>
