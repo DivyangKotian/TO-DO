@@ -30,7 +30,17 @@ module.exports = {
       {
         test: /\.css$/, // Regex for CSS files
         use: ['style-loader', 'css-loader'], // Loaders for CSS
-    }, 
+    },   {
+      test: /\.svg$/,
+      use: [
+        {
+          loader: 'svg-url-loader',
+          options: {
+            limit: 10000, // Inline files smaller than 10 KB
+          },
+        },
+      ],
+    },
     ],
   },
 };

@@ -2,7 +2,7 @@ import "./styles.css";
 
 import { TaskManager } from "./functions/taskManager";
 import { Task } from "./functions/tasks";
-import { renderTasks } from "./dom/dom";
+import { taskRender } from "./dom/dom";
 
 const taskManager = new TaskManager();
 
@@ -15,7 +15,9 @@ const sampleTask = new Task(
     'Personal'
 );
 
+const ui= new taskRender("content");
+
 taskManager.addTask(sampleTask);
 
 // Render tasks
-renderTasks(taskManager.getTasksByProject('Personal')); // Pass the tasks to render
+ui.renderTasks(taskManager.getTasksByProject('Personal')); // Pass the tasks to render
