@@ -48,7 +48,7 @@
          <div class="modal-content">
              <span class="span-close" id="close-modal">&times;</span>
              <div class="modal-form">
-                 <h1 class="form-title">Add new Task</h1>
+                 <h1 class="form-title"></h1>
                  <form class="form-add-task">
                      <div class="modal-input-field">
                          <label for="task-title">Title: </label>
@@ -63,7 +63,7 @@
                          <input type="text" 
                              name="task-description" 
                              id="task-description" 
-                             class="modal-form-input"/>
+                             class="modal-form-input" required>
                      </div>
                      <div class="modal-input-field">
                          <label for="project-tag">Project:</label>
@@ -72,10 +72,10 @@
                              id="project-tag" 
                              value="General"
                              placeholder="default : General" 
-                             class="modal-form-input"/>
+                             class="modal-form-input" required>
                      </div>
                      <div class="modal-input-field">
-                         <label for="priority-slider">Set priority:</label>
+                         <label for="priority-slider" id="priority-label">Set priority:</label>
                          <div class="priority-slider">
                              <input type="range" id="priority-slider" min="1" max="3" value="1">
                              <span id="priority-value">Low</span>
@@ -83,7 +83,7 @@
                      </div>
                      <div class="modal-input-field">
                          <label for="due-date">Due Date:</label>
-                         <input type="date" id="task-due-date" class="due-date-input" /> <!-- Added ID here -->
+                         <input type="date" id="task-due-date" class="due-date-input" required> 
                      </div>
                      <div class="submit-modal-form">
                          <button type="submit" class="submit-modal-btn btn" id="btn-submit-task">Submit</button> <!-- Added text to button -->
@@ -92,5 +92,18 @@
              </div>
          </div>
      </div>
+
+     <!-- task modal-->
+     <div id="details-modal" class="modal">
+        <div class="modal-content">
+            <span id="close-details-modal" class="span-close">&times;</span>
+            <h2 id="details-title"></h2>
+            <p id="details-description"></p>
+            <p><strong>Priority:</strong> <span id="details-priority"></span></p>
+            <p><strong>Due Date:</strong> <span id="details-due-date"></span></p>
+            <p><strong>Project:</strong> <span id="details-project"></span></p>
+        </div>
+    </div>
+    
     </body>
     </html>

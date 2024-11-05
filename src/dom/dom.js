@@ -1,16 +1,15 @@
-import { TaskManager } from "../functions/taskManager";
 
 class UIElements {
-    createEditButton(task, index, onEdit) {
+    createEditButton(task, index, modal) {
         const editBtn = document.createElement('button');
-        editBtn.setAttribute('class', 'edit-button');
+        editBtn.setAttribute('class', 'edit-button button');
         const editIcon = document.createElement('i');
         editIcon.setAttribute('class', 'fa-solid fa-pen-to-square');
         editBtn.appendChild(editIcon);
 
         editBtn.addEventListener('click', () => {
-            // Call the edit function and pass task and index
-            onEdit(task, index);
+            // Open the modal in edit mode
+            modal.showModal(task, index);
         });
         
         return editBtn;
@@ -18,25 +17,57 @@ class UIElements {
 
     createDeleteButton(taskManager, index, renderTasksCallback) {
         const deleteBtn = document.createElement('button');
-        deleteBtn.setAttribute('class', 'delete-button');
+        deleteBtn.setAttribute('class', 'delete-button button');
         const deleteIcon = document.createElement('i');
         deleteIcon.setAttribute('class', 'fa-solid fa-trash');
         deleteBtn.appendChild(deleteIcon);
     
         deleteBtn.addEventListener('click', () => {
-            taskManager.deleteTask(index);
-            renderTasksCallback(taskManager.getAllTasks());
+            if (taskManager && typeof taskManager.deleteTask === 'function') {
+                taskManager.deleteTask(index);
+                renderTasksCallback(taskManager.getAllTasks());
+            } else {
+                console.error("taskManager or deleteTask method is undefined.");
+            }
         });
     
         return deleteBtn;
     }
+
+    createDetailsButton(task,detailsModal){
+        const detailsBtn=document.createElement('button');
+        detailsBtn.setAttribute('class','details-button button');
+        const detailsIcon=document.createElement('i');
+        detailsIcon.setAttribute('class','fa-solid fa-arrow-down');
+        detailsBtn.appendChild(detailsIcon);
+
+        detailsBtn.addEventListener('click', () => {
+            detailsModal.showDetailsModal(task);
+        });
+
+        return detailsBtn;
+    }
+
+    getPriorityLabel(priorityValue) {           //converting 1,2,3 to low med high
+        switch (priorityValue) {
+            case '1':
+                return 'Low';
+            case '2':
+                return 'Med';
+            case '3':
+                return 'High';
+            default:
+                return ''; // In case of unexpected values
+        }
+    }
 }
 
 class TaskRender {
-    constructor(containerId, taskManager) {
+    constructor(containerId, taskManager,modal) {
         this.container = document.getElementById(containerId);
         this.taskManager = taskManager; 
         this.uiElements = new UIElements();
+        this.modal=modal;
     }
 
     createTaskElements(tag, textContent, className) {
@@ -57,7 +88,7 @@ class TaskRender {
         const taskContainer = document.createElement('div');
         taskContainer.id = `task-${index}`;
         taskContainer.className = 'task-container task';
-        
+        console.log("TaskManager in createTaskContainer:", this.taskManager); // Should be a valid TaskManager instance
         // Checkbox and label wrapper
         const doneWrapper = document.createElement('div');
         doneWrapper.className = 'done-wrapper';
@@ -78,7 +109,8 @@ class TaskRender {
 
         textWrapper.appendChild(this.createTaskTitle(task.title, 'text-element task-title'));
         textWrapper.appendChild(this.createTaskElements('span', task.description, 'task-description'));
-        textWrapper.appendChild(this.createTaskElements('span', task.priority, 'task-priority'));
+        textWrapper.appendChild(this.createTaskElements('span', this.uiElements.getPriorityLabel(task.priority), 'task-priority'));
+
         textWrapper.appendChild(this.createTaskElements('span', task.dueDate.toLocaleDateString(), 'task-date'));
         textWrapper.appendChild(this.createTaskElements('span', task.project, 'task-project'));
 
@@ -87,9 +119,13 @@ class TaskRender {
         doneWrapper.appendChild(doneLabel);
 
         taskContainer.appendChild(doneWrapper);
-        taskContainer.appendChild(this.uiElements.createEditButton(task, index, this.onEdit.bind(this))); 
+        taskContainer.appendChild(this.uiElements.createEditButton(task, index, this.modal)); 
         taskContainer.appendChild(this.uiElements.createDeleteButton(this.taskManager, index, this.renderTasks.bind(this)));
 
+        taskContainer.appendChild(this.uiElements.createDetailsButton(task, this.modal));
+
+        console.log("Returning taskContainer:", taskContainer);  // Should log a proper div element
+    
         return taskContainer;
     }
 
@@ -103,7 +139,7 @@ class TaskRender {
         document.querySelector('.due-date-input').value = task.dueDate.toISOString().split('T')[0]; // Set due date input
         modal.classList.add('visible');
 
-        // Handle form submission for editing (You need to implement this part)
+        // Handle form submission for editing 
         const form = document.querySelector('.form-add-task');
         form.onsubmit = (e) => {
             e.preventDefault();
@@ -115,6 +151,7 @@ class TaskRender {
             this.taskManager.updateTask(index, task);
 
             this.renderTasks(this.taskManager.getAllTasks());
+            console.log("Render tasks called with updated tasks:", this.taskManager.getAllTasks());
 
             modal.classList.remove('visible'); // Close modal after editing
         };
@@ -131,4 +168,4 @@ class TaskRender {
 }
 
 
-export{TaskRender}
+export{TaskRender, UIElements}
