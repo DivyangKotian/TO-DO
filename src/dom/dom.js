@@ -1,3 +1,4 @@
+import { SideBar } from "../functions/sidebar";
 
 class UIElements {
     createEditButton(task, index, modal) {
@@ -68,6 +69,9 @@ class TaskRender {
         this.taskManager = taskManager; 
         this.uiElements = new UIElements();
         this.modal=modal;
+        this.sidebar = new SideBar(this.taskManager);
+        this.sidebar.setTaskRender(this.renderTasks.bind(this));
+
     }
 
     createTaskElements(tag, textContent, className) {
@@ -84,6 +88,27 @@ class TaskRender {
         return taskTitle;
     }
 
+
+    // adding classes for css styling
+    applyPriorityClass(taskContainer, priority) {
+        // Remove any existing priority class
+        taskContainer.classList.remove('task-priority-low', 'task-priority-medium', 'task-priority-high');
+
+        switch (priority) {
+            case '1':
+                taskContainer.classList.add('task-priority-low');
+                break;
+            case '2':
+                taskContainer.classList.add('task-priority-medium');
+                break;
+            case '3':
+                taskContainer.classList.add('task-priority-high');
+                break;
+            default:
+                console.warn('Unexpected priority value:', priority);
+        }
+    }
+
     createTaskContainer(task, index) {
         const taskContainer = document.createElement('div');
         taskContainer.id = `task-${index}`;
@@ -94,22 +119,32 @@ class TaskRender {
         doneWrapper.className = 'done-wrapper';
 
         const doneCheckbox = document.createElement('input');
+        const checkboxId = `check-${task.title.replace(/\s+/g, '-')}-${index}`;
         doneCheckbox.type = 'checkbox';
         doneCheckbox.checked = task.done;
         doneCheckbox.className = 'done-checkbox';
-
-        const checkboxId = `check-${task.title.replace(/\s+/g, '-')}-${index}`;
+        
+        //event listner for the checkbox
+        doneCheckbox.addEventListener('change', () => {
+            task.done = doneCheckbox.checked;  // Update task 'done' status
+            this.taskManager.updateTask(index, task);  // Update task in TaskManager
+            this.sidebar.updateTaskCounts(); // to update the sidebar number
+        });
+        
         doneCheckbox.id = checkboxId;
-
         const doneLabel = document.createElement('label');
         doneLabel.setAttribute('for', checkboxId);
-
+        
         const textWrapper = document.createElement('div');
         textWrapper.className = 'text-wrapper';
 
+        //append required elements to the container
         textWrapper.appendChild(this.createTaskTitle(task.title, 'text-element task-title'));
         textWrapper.appendChild(this.createTaskElements('span', task.description, 'task-description'));
         textWrapper.appendChild(this.createTaskElements('span', this.uiElements.getPriorityLabel(task.priority), 'task-priority'));
+        
+        //call function to apply css classes based on priority
+        this.applyPriorityClass(taskContainer, task.priority);
 
         textWrapper.appendChild(this.createTaskElements('span', task.dueDate.toLocaleDateString(), 'task-date'));
         textWrapper.appendChild(this.createTaskElements('span', task.project, 'task-project'));
@@ -125,6 +160,7 @@ class TaskRender {
         taskContainer.appendChild(this.uiElements.createDetailsButton(task, this.modal));
 
         console.log("Returning taskContainer:", taskContainer);  // Should log a proper div element
+
     
         return taskContainer;
     }
@@ -164,6 +200,8 @@ class TaskRender {
             const taskContainer = this.createTaskContainer(task, index);
             this.container.appendChild(taskContainer);
         });
+
+        this.sidebar.updateTaskCounts();
     }
 }
 

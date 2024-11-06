@@ -7,30 +7,31 @@ import "./style/checkbox.css"
 import { TaskManager } from "./functions/taskManager";
 import { Task } from "./functions/tasks";
 import { TaskRender } from "./dom/dom";
-import { Modal } from "./functions/sidebar";
+import { Modal } from "./functions/modal";
+import { SideBar } from "./functions/sidebar";
 
-const taskManager = new TaskManager();
-const taskModal = new Modal('btn-add-task', 'modal', 'close-modal', taskManager,'details-modal'); 
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize taskManager
+    const taskManager = new TaskManager();
 
-//at this point taskRender is null, but since I need to create a modal to send to taskRender, so after taskRender is initialized, set it again in our modal class, basically taaskModal and taskRender are interlinked
+    // Add tasks
+    const sampleTask = new Task('Sample Task', 'This is a sample task description.', new Date(), '1', 'Personal');
+    const sampleTask2 = new Task('second task', 'New description', '2025-11-11', '2', 'Work');
+    taskManager.addTask(sampleTask);
+    taskManager.addTask(sampleTask2);
 
-const taskRender = new TaskRender('content', taskManager, taskModal);       
+    // Initialize taskModal and taskRender
+    const taskModal = new Modal('btn-add-task', 'modal', 'close-modal', taskManager, 'details-modal');
+    const taskRender = new TaskRender('content', taskManager, taskModal);
 
-// Pass the TaskRender instance to the modal for rendering tasks
-taskModal.setTaskRender(taskRender);        
+    // Pass taskRender to taskModal
+    taskModal.setTaskRender(taskRender);
 
-// Add a sample task
-const sampleTask = new Task(
-    'Sample Task',
-    'This is a sample task description.',
-    new Date(), // Set due date as today's date
-    '1',
-    'Personal'
-);
+    // Initialize the sidebar with taskManager and taskRender
+    const sidebar = new SideBar(taskManager);
+    sidebar.setTaskRender(taskRender)
+    taskRender.renderTasks(taskManager.getAllTasks());
+    sidebar.updateProjectList();
+});
 
-const sampleTask2 = new Task('second task', 'New description, ill try to make it a little longer', '2025-11-11', '2', 'Work');
-
-taskManager.addTask(sampleTask);
-taskManager.addTask(sampleTask2);
-
-taskRender.renderTasks(taskManager.getAllTasks());
+// Call renderTasks if required

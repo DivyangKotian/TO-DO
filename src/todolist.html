@@ -13,14 +13,16 @@
 </head>
 <body>
     <div class="side-bar">
-        <button id ="btn-add-task" class="new-task"> New Task</button>
+        <button id="btn-add-task" class="new-task">New Task</button>
         <ul class="time-based">
-            <li class="all-tasks">All Tasks</li>
-            <li class="today">Today</li>
-            <li class="this-month">This Month</li>
-            <li class="this-year">This Year</li>
+            <li class="all-tasks"><span class="task-name">All Tasks</span><span class="task-count"></span></li>
+            <li class="today"><span class="task-name">Today</span><span class="task-count"></span></li>
+            <li class="upcomming-week"><span class="task-name">This Week</span><span class="task-count"></span></li>
+            <li class="this-month"><span class="task-name">This Month</span><span class="task-count"></span></li>
+            <li class="this-year"><span class="task-name">This Year</span><span class="task-count"></span></li>
         </ul>
-        <ul class="project-based">
+        <ul class="project-based"><h3>Your Projects</h3>
+            
 
         </ul>
     </div>
@@ -78,7 +80,7 @@
                          <label for="priority-slider" id="priority-label">Set priority:</label>
                          <div class="priority-slider">
                              <input type="range" id="priority-slider" min="1" max="3" value="1">
-                             <span id="priority-value">Low</span>
+                             <span id="priority-value"></span>
                          </div>
                      </div>
                      <div class="modal-input-field">

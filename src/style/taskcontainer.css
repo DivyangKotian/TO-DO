@@ -4,11 +4,7 @@
     border-radius: 8px;
     background-color: #f9f9f9;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease;
-}
-
-.task-container:hover {
-    transform: scale(1.01);
+    padding-left: 20px;
 }
 
 .text-wrapper {
@@ -20,18 +16,21 @@
 .task-title {
     font-size: 1.2rem;
     font-weight: bold;
+    width: clamp(5rem,10rem,15rem); /* Limit Title height */
+    max-height: 1.5rem;
+    overflow: hidden; /* Hide overflow */
+    text-overflow: hidden; /* Show ellipsis for overflowed text */
+    line-height: 1.5;
 }
 
 .task-project {
     font-size: 0.9rem;
-    color: #888;
 }
 
 /* Description - Limit size */
 .task-description {
     font-size: 1rem;
-    color: #333;
-    width: clamp(10rem,25rem,30rem); /* Limit description height */
+    width: clamp(5rem,15rem,20rem); /* Limit description height */
     max-height: 1.5rem;
     overflow: hidden; /* Hide overflow */
     text-overflow: hidden; /* Show ellipsis for overflowed text */
@@ -42,19 +41,15 @@
 .task-priority {
     font-size: 1rem;
     font-weight: bold;
-    color: #333;
 }
 
 .task-date {
     font-size: 0.9rem;
-    color: #666;
 }
 
-/* Done checkbox */
 .done-wrapper {
     display: flex;
     align-items: center;
-    gap: 10px;
 }
 
 .done-checkbox {
@@ -90,4 +85,21 @@ button.details-button {
 
 button.details-button:hover {
     background-color: #1976d2;
+}
+
+
+/*this is for the priority borders*/
+.task-priority-low {
+    border-left: 4px solid green;
+    background-color: #e0f7e9;
+}
+
+.task-priority-medium {
+    border-left: 4px solid orange;
+    background-color: #fff3cd;
+}
+
+.task-priority-high {
+    border-left: 4px solid red;
+    background-color: #f8d7da;
 }

@@ -1,5 +1,3 @@
-import { Task } from "./tasks";
-
 class TaskManager {
     constructor() {
         this.tasks = [];
@@ -74,11 +72,12 @@ class TaskManager {
     
     updateTask(index, updatedTask) {
         if (index >= 0 && index < this.tasks.length) {
-            this.tasks[index] = updatedTask;
+        this.tasks[index] = { ...this.tasks[index], ...updatedTask }; // so here I expand this.task[index] and then update any values changed, the reason im expanding is to make sure task.done value is included when updating a task
         } else {
             console.error('Invalid index. Task not updated.');
         }
     }
+
 }
 
 export { TaskManager };

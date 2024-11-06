@@ -1,6 +1,6 @@
 
 class Task{
-    constructor(title,description,dueDate,priority,project,done){
+    constructor(title,description,dueDate,priority,project,done=false){
         this.title=title;
         this.description=description;
         this.dueDate= new Date(dueDate);

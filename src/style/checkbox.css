@@ -234,27 +234,47 @@
   @-webkit-keyframes firework-11 {
     0% {
       opacity: 1;
-      box-shadow: 0 0 0 -2px #4F29F0, 0 0 0 -2px #4F29F0, 0 0 0 -2px #4F29F0, 0 0 0 -2px #4F29F0, 0 0 0 -2px #4F29F0, 0 0 0 -2px #4F29F0;
+      box-shadow: 0 0 0 -2px #4F29F0,
+                  0 0 0 -2px #4F29F0, 
+                  0 0 0 -2px #4F29F0,
+                  0 0 0 -2px #4F29F0,
+                  0 0 0 -2px #4F29F0,
+                  0 0 0 -2px #4F29F0;
     }
     30% {
       opacity: 1;
     }
     100% {
       opacity: 0;
-      box-shadow: 0 -15px 0 0px #4F29F0, 14px -8px 0 0px #4F29F0, 14px 8px 0 0px #4F29F0, 0 15px 0 0px #4F29F0, -14px 8px 0 0px #4F29F0, -14px -8px 0 0px #4F29F0;
+      box-shadow: 0 -15px 0 0px #4F29F0,
+                  14px -8px 0 0px #4F29F0,
+                  14px 8px 0 0px #4F29F0,
+                  0 15px 0 0px #4F29F0,
+                  -14px 8px 0 0px #4F29F0,
+                  -14px -8px 0 0px #4F29F0;
     }
   }
   @keyframes firework-11 {
     0% {
       opacity: 1;
-      box-shadow: 0 0 0 -2px #4F29F0, 0 0 0 -2px #4F29F0, 0 0 0 -2px #4F29F0, 0 0 0 -2px #4F29F0, 0 0 0 -2px #4F29F0, 0 0 0 -2px #4F29F0;
+      box-shadow: 0 0 0 -2px #4F29F0,
+                  0 0 0 -2px #4F29F0,
+                  0 0 0 -2px #4F29F0, 
+                  0 0 0 -2px #4F29F0, 
+                  0 0 0 -2px #4F29F0, 
+                  0 0 0 -2px #4F29F0;
     }
     30% {
       opacity: 1;
     }
     100% {
       opacity: 0;
-      box-shadow: 0 -15px 0 0px #4F29F0, 14px -8px 0 0px #4F29F0, 14px 8px 0 0px #4F29F0, 0 15px 0 0px #4F29F0, -14px 8px 0 0px #4F29F0, -14px -8px 0 0px #4F29F0;
+      box-shadow: 0 -15px 0 0px #4F29F0, 
+                  14px -8px 0 0px #4F29F0, 
+                  14px 8px 0 0px #4F29F0, 
+                  0 15px 0 0px #4F29F0, 
+                  -14px 8px 0 0px #4F29F0, 
+                  -14px -8px 0 0px #4F29F0;
     }
   }
 
@@ -266,14 +286,6 @@
     flex-wrap: wrap;
   }
   
-  /* Individual text elements */
-  .text-element {
-    display: inline-block;
-    transition: color 0.3s, text-decoration 0.3s;
-  }
-  
-  /* Strike-through effect when checkbox is checked */
-  .done-wrapper input[type="checkbox"]:checked + label .text-element {
-    text-decoration: line-through;
-    color: var(--disabled);
-  }
+  .done-wrapper input[type=checkbox]:checked ~ .text-wrapper>* {
+    color: var(--disabled); /* Applies the color to all text elements inside the text-wrapper */
+}
