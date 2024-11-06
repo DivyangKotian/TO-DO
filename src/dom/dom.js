@@ -188,20 +188,21 @@ class TaskRender {
 
             this.renderTasks(this.taskManager.getAllTasks());
             console.log("Render tasks called with updated tasks:", this.taskManager.getAllTasks());
-
+            
             modal.classList.remove('visible'); // Close modal after editing
         };
     }
-
-  renderTasks(tasks) {
+    
+    renderTasks(tasks) {
         this.container.textContent = ""; 
-
+        
         tasks.forEach((task, index) => {
             const taskContainer = this.createTaskContainer(task, index);
             this.container.appendChild(taskContainer);
         });
-
+        
         this.sidebar.updateTaskCounts();
+        this.sidebar.updateProjectList();
     }
 }
 

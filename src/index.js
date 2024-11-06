@@ -31,7 +31,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const sidebar = new SideBar(taskManager);
     sidebar.setTaskRender(taskRender)
     taskRender.renderTasks(taskManager.getAllTasks());
-    sidebar.updateProjectList();
 });
 
 // Call renderTasks if required
