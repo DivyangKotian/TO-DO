@@ -1,0 +1,27 @@
+
+.side-bar {
+    overflow: visible;  /* Ensure the list items are not hidden */
+}
+
+.active{
+    background-color: #ddd;  /* Or another distinctive color */
+    font-weight: bold;
+}
+
+.task-name{
+    cursor: pointer;
+}
+
+.project-items{
+    cursor: pointer;
+}
+/* Ensure the active class styles are applied to project items */
+.project-item.active {
+    background-color: #ddd;  /* Example of background color for active state */
+    font-weight: bold;       /* Example of making text bold for visibility */
+}
+
+/* Optional: Add hover effect to make the active item stand out more */
+.project-item:hover {
+    background-color: #eee;
+}
