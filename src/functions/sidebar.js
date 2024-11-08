@@ -153,7 +153,8 @@ class SideBar {
         projectItem.appendChild(taskCount);
 
         // Add click handler
-        projectItem.addEventListener('click', () => {
+        projectItem.addEventListener('click', (e) => {
+            e.stopPropagation();
             this.handleFilterChange(
                 'project',
                 () => this.taskManager.getTasksByProject(project),

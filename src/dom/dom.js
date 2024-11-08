@@ -25,10 +25,10 @@ class UIElements {
     
         deleteBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            if (confirm('Are you sure you want to delete this task?')) {
+            
                 taskManager.deleteTask(index);
                 if (onDeleteCallback) onDeleteCallback();
-            }
+            
         });
     
         return deleteBtn;
@@ -58,6 +58,7 @@ class UIElements {
         };
         return priorityMap[priority] || 'Unknown';
     }
+
 }
 
 class TaskRender {
@@ -69,15 +70,26 @@ class TaskRender {
         this.sidebar = sidebar;
         this.currentTasks = [];
 
+        this.createSortBar(); // calling initial sort bar creation
+
         // Subscribe to task manager updates
         this.taskManager.subscribe(() => {
             this.refreshView();
         });
 
+        //initializing this as flag to keep track of sort bar status
+        this.sortOrder = {
+            name: true,     // true for ascending, false for descending
+            priority: true,
+            dueDate: true,
+            project: true,
+            done: true       
+        };
+        
         // Initialize the view
         this.refreshView();
     }
-
+    
     refreshView() {
         const filteredTasks = this.sidebar.currentFilter();
         this.renderTasks(filteredTasks);
@@ -90,6 +102,65 @@ class TaskRender {
         element.textContent = textContent;
         element.className = className;
         return element;
+    }
+
+    createSortBar(){
+        const sortContainer= document.createElement('div');
+        sortContainer.setAttribute('class','sort-container');
+    
+        const sortStatus=document.createElement('p');
+        sortStatus.setAttribute('class', 'sort-item sort-status');
+        sortStatus.textContent='Status';
+        sortStatus.addEventListener('click', () => this.toggleSort('done'));
+
+        const sortName=document.createElement('p');
+        sortName.setAttribute('class', 'sort-item sort-name');
+        sortName.textContent='Name';
+        sortName.addEventListener('click', () => this.toggleSort('name'));
+    
+        const sortPriority=document.createElement('p');
+        sortPriority.setAttribute('class', 'sort-item sort-priority');
+        sortPriority.textContent='Priority';
+        sortPriority.addEventListener('click', () => this.toggleSort('priority'));
+    
+        const sortDueDate=document.createElement('p');
+        sortDueDate.setAttribute('class', 'sort-item sort-duedate');
+        sortDueDate.textContent='Date';
+        sortDueDate.addEventListener('click', () => this.toggleSort('dueDate'));
+
+    
+        const sortProject=document.createElement('p');
+        sortProject.setAttribute('class', 'sort-item sort-project');
+        sortProject.textContent='Project';
+        sortProject.addEventListener('click', () => this.toggleSort('project'));
+    
+        sortContainer.appendChild(sortStatus)
+        sortContainer.appendChild(sortName);    
+        sortContainer.appendChild(sortPriority);  
+        sortContainer.appendChild(sortDueDate);  
+        sortContainer.appendChild(sortProject);  
+
+        const sortDiv=document.getElementById('sort-content');
+        sortDiv.appendChild(sortContainer);
+
+       return sortContainer;
+    
+    }
+    
+    toggleSort(criteria) {
+        // Toggle the sorting order for the given criteria
+        this.sortOrder[criteria] = !this.sortOrder[criteria];
+
+        // Call the sort function on TaskManager
+        this.taskManager.sortTasks(criteria, this.sortOrder[criteria]);
+
+        // Re-render the tasks after sorting
+        this.renderTasksFiltered();
+    }
+
+    sortTasks(criteria) {
+        this.taskManager.sortTasks(criteria);
+        this.renderTasksFiltered();  // Re-render tasks after sorting
     }
     
     createTaskContainer(task, index) {

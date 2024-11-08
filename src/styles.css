@@ -8,21 +8,36 @@ body{
     display: grid;
     max-height: 100vh;
     grid-template-columns: 0.7fr 4fr;
-    grid-template-rows: 1fr 5fr 1fr;
-    grid-template-areas: "sidebar maincontent"
-                            "sidebar maincontent"
-                            "footer footer";
+    grid-template-rows: 0.2fr 1fr 4.5fr 1fr;
+    grid-template-areas: "sidebar sortcontent"
+                        "sidebar maincontent"
+                        "sidebar maincontent"
+                        "sidebar footer";
 }
 
 .side-bar{
     grid-area: sidebar;
     background-color: aqua;
-    height: calc(100vh - 40px);
+    /* height: calc(100vh - 90px); */
 }
 
-.main-content{
+.main-content {
     grid-area: maincontent;
     background-color: blanchedalmond;
+    max-width: 100%;
+    height: calc(100vh - 90px);
+    overflow-y: scroll;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+.main-content::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+.sort-content{
+    grid-area: sortcontent; 
+    height: fit-content;
 }
 
 .task {
