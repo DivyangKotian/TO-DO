@@ -61,9 +61,9 @@ class Modal {
             document.getElementById('task-due-date').value = task.dueDate.toISOString().split('T')[0];
             document.getElementById('priority-slider').value = task.priority;
             document.getElementById('project-tag').value = task.project;
+            this.currentTaskId = task.id;
             
             this.isEditMode = true;
-            this.currentTaskIndex = index;
         } else {
             // Reset fields for adding a new task
             this.clearForm();
@@ -93,8 +93,8 @@ class Modal {
                 return; // Prevent form submission
             }     
             this.taskManager.addTask(newTask);
-            this.taskRender.renderTasks(this.taskManager.getAllTasks());
-            
+            this.taskRender.renderTasksFiltered();
+
             this.clearForm();
             this.hideModal();
         }
@@ -107,9 +107,9 @@ class Modal {
         document.getElementById('details-priority').textContent = this.uiElements.getPriorityLabel(task.priority);
         document.getElementById('details-due-date').textContent = task.dueDate.toLocaleDateString();
         document.getElementById('details-project').textContent = task.project;
-    
+        
         modal.classList.add('visible');
-    
+        
         // Close functionality for the modal
         const closeModal = document.getElementById('close-details-modal');
         closeModal.onclick = () => modal.classList.remove('visible');
@@ -120,19 +120,32 @@ class Modal {
 
     // Edit an existing task
     editTask() {
-        const task = this.taskManager.getAllTasks()[this.currentTaskIndex];
+        // Get the task to edit using the task ID from the full list
+        const task = this.taskManager.getAllTasks().find(t => t.id === this.currentTaskId);
+        
+        if (!task) {
+            console.error('Task not found for editing');
+            return;
+        }
+    
+        // Update task fields from the modal
         task.title = document.getElementById('task-title').value;
         task.description = document.getElementById('task-description').value;
         task.dueDate = new Date(document.getElementById('task-due-date').value);
         task.priority = document.getElementById('priority-slider').value;
         task.project = document.getElementById('project-tag').value;
-
-        if(task.title && task.description && task.dueDate && task.priority && task.project){ 
-        this.taskManager.updateTask(this.currentTaskIndex, task);
-        this.taskRender.renderTasks(this.taskManager.getAllTasks());
-        
-        this.clearForm();
-        this.hideModal();
+    
+        // If all required fields are filled, update the task in the manager
+        if (task.title && task.description && task.dueDate && task.priority && task.project) {
+            this.taskManager.updateTask(task.id, task);  // Use the task ID for the update
+    
+            // Re-render the filtered tasks (if any filter is active)
+            this.taskRender.renderTasksFiltered();
+    
+            this.clearForm();
+            this.hideModal();
+        } else {
+            console.error('Task details are incomplete');
         }
     }
 

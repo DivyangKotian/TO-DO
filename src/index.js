@@ -27,8 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
     taskManager.addTask(sampleTask5);
 
     // Initialize Modal
-    const taskModal = new Modal('btn-add-task', 'modal', 'close-modal', taskManager, 'details-modal');
     const sidebar = new SideBar(taskManager);
+    const taskModal = new Modal('btn-add-task', 'modal', 'close-modal', taskManager, 'details-modal');
     const taskRender = new TaskRender('content', taskManager, taskModal, sidebar);
 
     // Pass TaskRender to Modal and Sidebar

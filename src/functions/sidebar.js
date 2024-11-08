@@ -10,6 +10,10 @@ class SideBar {
                 selector: '.all-tasks',
                 getFilteredTasks: () => this.taskManager.getAllTasks(),
             },
+            completed: {
+                    selector: '.completed-tasks',
+                    getFilteredTasks: () => this.taskManager.getCompletedTasks(),
+            },
             today: {
                 selector: '.today',
                 getFilteredTasks: () => this.taskManager.getTaskToday(),
@@ -60,8 +64,10 @@ class SideBar {
     }
 
     handleFilterChange(filterType, filterFunction, element) {
+        console.log("Filter changed to:", filterType); // Log the filter type
         this.currentFilterType = filterType;
         this.currentFilter = filterFunction;
+        console.log("Activating element:", element);
         this.setActiveTab(element);
         this.renderFilteredTasks();
     }
@@ -75,15 +81,18 @@ class SideBar {
     }
 
     setActiveTab(selectedItem) {
-        // Remove active class from all possible active elements
-        ['time-based .task-name', 'project-based .project-item'].forEach(selector => {
-            document.querySelectorAll(`.side-bar .${selector}`).forEach(item => {
-                const elementToDeactivate = selector.includes('task-name') ? item.parentElement : item;
-                elementToDeactivate.classList.remove('active');
-            });
+        // Remove active class from time-based filters
+        document.querySelectorAll('.side-bar .time-based .task-name').forEach(item => {
+            item.parentElement.classList.remove('active');
+        });
+    
+        // Remove active class from project-based filters
+        document.querySelectorAll('.side-bar .project-based .project-item').forEach(item => {
+            item.classList.remove('active');
         });
 
-        // Add active class to selected item
+        console.log("Selected Item for Active Tab:", selectedItem);
+        // Add active class to the selected item
         selectedItem.classList.add('active');
     }
 
@@ -134,7 +143,7 @@ class SideBar {
 
         const projectName = document.createElement('span');
         projectName.className = 'project-name';
-        projectName.textContent = project;
+        projectName.textContent = project.toUpperCase();
 
         const taskCount = document.createElement('span');
         taskCount.className = 'task-count';

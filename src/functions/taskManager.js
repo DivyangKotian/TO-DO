@@ -75,6 +75,10 @@ class TaskManager {
         return [...this.tasks]; // Return a copy to prevent direct modification
     }
 
+    getCompletedTasks(){
+        return this.tasks.filter(task => task.done)
+    }
+
     deleteTask(index) {
         if (index >= 0 && index < this.tasks.length) {
             this.tasks.splice(index, 1);
@@ -86,12 +90,15 @@ class TaskManager {
         return [...new Set(this.tasks.map(task => task.project))];
     }
 
-    updateTask(index, updatedTask) {
-        if (index >= 0 && index < this.tasks.length) {
-            this.tasks[index] = { ...this.tasks[index], ...updatedTask };
+    updateTask(id, updatedTask) {
+        console.log('Updating Task ID:', id); 
+        const taskIndex = this.tasks.findIndex(task => task.id === id);
+        if (taskIndex !== -1) {
+            this.tasks[taskIndex] = { ...this.tasks[taskIndex], ...updatedTask };
             this.notifySubscribers();
         }
     }
+    
 }
 
 export{TaskManager}
