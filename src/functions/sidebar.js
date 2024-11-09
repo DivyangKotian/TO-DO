@@ -3,16 +3,17 @@ class SideBar {
         this.taskManager = taskManager;
         this.taskRender = null;
         this.currentFilterType = 'all';
+        this.activeElement = null; // Track the currently active element
         
-        // Define filter configurations
+        // Define static filter configurations
         this.filterConfigs = {
             all: {
                 selector: '.all-tasks',
                 getFilteredTasks: () => this.taskManager.getAllTasks(),
             },
             completed: {
-                    selector: '.completed-tasks',
-                    getFilteredTasks: () => this.taskManager.getCompletedTasks(),
+                selector: '.completed-tasks',
+                getFilteredTasks: () => this.taskManager.getCompletedTasks(),
             },
             today: {
                 selector: '.today',
@@ -32,9 +33,7 @@ class SideBar {
             }
         };
 
-        // Initialize current filter
         this.currentFilter = this.filterConfigs.all.getFilteredTasks;
-        
         this.initialize();
     }
 
@@ -64,36 +63,57 @@ class SideBar {
     }
 
     handleFilterChange(filterType, filterFunction, element) {
-        console.log("Filter changed to:", filterType); // Log the filter type
+        console.log("Filter changed to:", filterType);
+        console.log("Element before active:", element);
+        
         this.currentFilterType = filterType;
         this.currentFilter = filterFunction;
-        console.log("Activating element:", element);
+        
+        // Set active state before rendering
         this.setActiveTab(element);
-        this.renderFilteredTasks();
+        
+        // Render tasks after setting active state
+        requestAnimationFrame(() => {
+            this.renderFilteredTasks();
+        });
     }
 
     renderFilteredTasks() {
         if (this.taskRender?.renderTasks) {
             const filteredTasks = this.currentFilter();
             this.taskRender.renderTasks(filteredTasks);
-            this.updateAllCounts();
+            
+            // Preserve active state after rendering
+            if (this.activeElement) {
+                requestAnimationFrame(() => {
+                    this.activeElement.classList.add('active');
+                    console.log('Restored active state after render');
+                });
+            }
         }
     }
 
     setActiveTab(selectedItem) {
-        // Remove active class from time-based filters
-        document.querySelectorAll('.side-bar .time-based .task-name').forEach(item => {
-            item.parentElement.classList.remove('active');
-        });
+        console.log('Setting active tab for:', selectedItem);
+        
+        // Store the previously active element
+        const previousActive = this.activeElement;
+        
+        // Remove active class from previous element if it exists
+        if (previousActive && previousActive !== selectedItem) {
+            previousActive.classList.remove('active');
+            console.log('Removed active from previous:', previousActive);
+        }
     
-        // Remove active class from project-based filters
-        document.querySelectorAll('.side-bar .project-based .project-item').forEach(item => {
-            item.classList.remove('active');
-        });
-
-        console.log("Selected Item for Active Tab:", selectedItem);
         // Add active class to the selected item
-        selectedItem.classList.add('active');
+        if (selectedItem) {
+            selectedItem.classList.add('active');
+            this.activeElement = selectedItem; // Update the active element reference
+            console.log('Added active to:', selectedItem);
+        }
+        
+        // Log the current state
+        console.log('Current active element:', this.activeElement);
     }
 
     updateAllCounts() {
@@ -116,6 +136,9 @@ class SideBar {
         const projectList = document.querySelector('.project-based');
         if (!projectList) return;
 
+        // Store current active project if any
+        const currentActiveProject = this.activeElement?.dataset?.project;
+
         // Get projects that have undone tasks
         const projectsWithTasks = new Map();
         this.taskManager.getAllTasks()
@@ -133,6 +156,12 @@ class SideBar {
         projectsWithTasks.forEach((count, project) => {
             const projectItem = this.createProjectItem(project, count);
             projectList.appendChild(projectItem);
+            
+            // Restore active state if this was the active project
+            if (project === currentActiveProject) {
+                projectItem.classList.add('active');
+                this.activeElement = projectItem;
+            }
         });
     }
 
@@ -152,14 +181,17 @@ class SideBar {
         projectItem.appendChild(projectName);
         projectItem.appendChild(taskCount);
 
-        // Add click handler
+        // Add click handler with project-specific filter function
         projectItem.addEventListener('click', (e) => {
-            e.stopPropagation();
-            this.handleFilterChange(
-                'project',
-                () => this.taskManager.getTasksByProject(project),
-                projectItem
-            );
+            e.preventDefault(); // Prevent default behavior
+            e.stopPropagation(); // Stop event bubbling
+            
+            console.log('Project item clicked:', project);
+            
+            // Create a project-specific filter function
+            const projectFilter = () => this.taskManager.getTasksByProject(project);
+            
+            this.handleFilterChange('project', projectFilter, projectItem);
         });
 
         return projectItem;
@@ -167,7 +199,18 @@ class SideBar {
 
     // Public method to force update everything (useful after task changes)
     refresh() {
+        // Store current active element before refresh
+        const currentActive = this.activeElement;
+        
         this.renderFilteredTasks();
+        
+        // Restore active state after refresh
+        if (currentActive) {
+            requestAnimationFrame(() => {
+                currentActive.classList.add('active');
+                console.log('Restored active state after refresh');
+            });
+        }
     }
 }
 

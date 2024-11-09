@@ -80,14 +80,14 @@ class TaskRender {
         //initializing this as flag to keep track of sort bar status
         this.sortOrder = {
             name: true,     // true for ascending, false for descending
-            priority: true,
+            priority: false,
             dueDate: true,
             project: true,
             done: true       
         };
         
+        this.taskManager.sortTasks('priority',false); // my initial sort will be high to low
         // Initialize the view
-        this.refreshView();
     }
     
     refreshView() {
@@ -111,7 +111,6 @@ class TaskRender {
         const sortStatus=document.createElement('p');
         sortStatus.setAttribute('class', 'sort-item sort-status');
         sortStatus.textContent='Status';
-        sortStatus.addEventListener('click', () => this.toggleSort('done'));
 
         const sortName=document.createElement('p');
         sortName.setAttribute('class', 'sort-item sort-name');
@@ -125,7 +124,7 @@ class TaskRender {
     
         const sortDueDate=document.createElement('p');
         sortDueDate.setAttribute('class', 'sort-item sort-duedate');
-        sortDueDate.textContent='Date';
+        sortDueDate.textContent='Date(YY-MM-DD)';
         sortDueDate.addEventListener('click', () => this.toggleSort('dueDate'));
 
     
@@ -148,6 +147,8 @@ class TaskRender {
     }
     
     toggleSort(criteria) {
+
+        const currentSortCriteria=criteria;        
         // Toggle the sorting order for the given criteria
         this.sortOrder[criteria] = !this.sortOrder[criteria];
 
@@ -156,17 +157,17 @@ class TaskRender {
 
         // Re-render the tasks after sorting
         this.renderTasksFiltered();
-    }
 
-    sortTasks(criteria) {
-        this.taskManager.sortTasks(criteria);
-        this.renderTasksFiltered();  // Re-render tasks after sorting
+        return currentSortCriteria;
     }
     
     createTaskContainer(task, index) {
         const taskContainer = document.createElement('div');
         taskContainer.id = `task-${task.id || index}`;
         taskContainer.className = 'task-container task';
+        if (task.done) {
+            taskContainer.classList.add('task-done');
+        }
         this.applyPriorityClass(taskContainer, task.priority);
         
         const doneWrapper = this.createDoneWrapper(task, index);
@@ -189,12 +190,18 @@ class TaskRender {
         doneWrapper.appendChild(doneCheckbox);
         doneWrapper.appendChild(doneLabel);
         
+        // Add the done-wrapper click handler
         doneWrapper.addEventListener('click', (e) => {
-            // Only toggle if clicked outside the checkbox itself to avoid double toggling
+            // Only toggle if clicked outside the checkbox itself
             if (e.target !== doneCheckbox) {
                 doneCheckbox.checked = !doneCheckbox.checked;
                 this.doneCheckboxChangeHandler(task, doneCheckbox);
             }
+        });
+
+        // Add specific checkbox change handler
+        doneCheckbox.addEventListener('change', () => {
+            this.doneCheckboxChangeHandler(task, doneCheckbox);
         });
         
         return doneWrapper;
@@ -210,7 +217,7 @@ class TaskRender {
         return doneCheckbox;
     }
     
-    createDoneLabel(task, checkboxId, doneCheckbox) {
+    createDoneLabel(task, checkboxId) {
         const doneLabel = document.createElement('label');
         doneLabel.setAttribute('for', checkboxId);
         
@@ -238,9 +245,19 @@ class TaskRender {
     
     doneCheckboxChangeHandler(task, doneCheckbox) {
         task.done = doneCheckbox.checked;
-        this.taskManager.updateTask(task.id, task);
-        this.renderTasksFiltered();
+    
+        // Delay sorting by 700ms (letting the checkbox animation play)
+        setTimeout(() => {
+            this.taskManager.sortTasks(this.currentSortCriteria, this.sortOrder[this.currentSortCriteria]); // Sort tasks after delay
+            // Update task after done status change
+            this.taskManager.updateTask(task.id, task);        
+            
+            // Update task counts in the sidebar
+            this.sidebar.updateAllCounts();
+        }, 700);                        
+        
     }
+    
 
     createButtonWrapper(task, index) {
         const buttonWrapper = document.createElement('div');

@@ -1,27 +1,61 @@
-
+/* Sidebar Styling */
 .side-bar {
-    overflow: visible;  /* Ensure the list items are not hidden */
+    overflow: visible; /* Ensure the list items are not hidden */
+    padding: 20px;
+    background-color: var(--sidebar-bg); /* Soft pastel lavender-gray */
+    border-radius: 8px; /* Rounded corners for the sidebar */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 
-.active{
-    background-color: #ddd;  /* Or another distinctive color */
+/* Active state for sidebar items */
+.active {
+    background-color: var(--primary-dark); /* Darker violet for active items */
+    font-weight: bold;
+    color: var(--background-color); /* Light text color for contrast */
+    border-radius: 5px; /* Rounded corners for active item */
+    padding: 5px 10px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Task name styling */
+.task-name {
+    cursor: pointer;
+    color: var(--text-color);
+    font-size: 1rem;
+    transition: color 0.3s;
+}
+
+.task-name:hover {
+    color: var(--primary-dark); /* Change color on hover for better UX */
+}
+
+/* Project item styling */
+.project-items,
+.project-item {
+    cursor: pointer;
+    font-size: 1rem;
+    color: var(--text-color);
+    padding: 5px 10px;
+    border-radius: 5px; /* Rounded corners */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Active state for project items */
+.project-item.active {
+    background-color: var(--primary-dark); /* Darker violet for active project */
+    color: var(--background-color); /* Light text for contrast */
     font-weight: bold;
 }
 
-.task-name{
-    cursor: pointer;
-}
-
-.project-items{
-    cursor: pointer;
-}
-/* Ensure the active class styles are applied to project items */
-.project-item.active {
-    background-color: #ddd;  /* Example of background color for active state */
-    font-weight: bold;       /* Example of making text bold for visibility */
-}
-
-/* Optional: Add hover effect to make the active item stand out more */
+/* Hover effect for project items */
 .project-item:hover {
-    background-color: #eee;
+    background-color: #f1e1f7; /* Light lavender hover effect */
+    color: var(--primary-dark); /* Change text color on hover */
+}
+
+/* Optional: Add hover effect to active items */
+.project-item.active:hover {
+    background-color: var(--primary-dark);
+    color: var(--background-color);
+    transform: scale(1.05); /* Slight scale effect on hover to make it stand out */
 }

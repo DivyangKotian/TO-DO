@@ -3,7 +3,7 @@
 
 .done-wrapper {
     --text: #414856;
-    --check: #4F29F0;
+    --check: #6c4f99;
     --disabled: #C3C8DE;
     --border-radius: 10px;
     border-radius: var(--border-radius);

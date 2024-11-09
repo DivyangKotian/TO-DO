@@ -51,14 +51,15 @@ class Modal {
     }
 
     // Show modal and set it for add or edit mode
-    showModal(task = null, index = null) {
+    showModal(task = null) {
         this.modal.classList.add('visible');
         
         if (task) {  //for editing task mode
             // Populate fields for editing
             document.getElementById('task-title').value = task.title;
             document.getElementById('task-description').value = task.description;
-            document.getElementById('task-due-date').value = task.dueDate.toISOString().split('T')[0];
+            const dueDate = new Date(task.dueDate);
+            document.getElementById('task-due-date').value = dueDate.toISOString().split('T')[0];
             document.getElementById('priority-slider').value = task.priority;
             document.getElementById('project-tag').value = task.project;
             this.currentTaskId = task.id;

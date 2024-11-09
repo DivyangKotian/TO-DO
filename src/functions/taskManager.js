@@ -5,8 +5,12 @@ class TaskManager {
         this.subscribers = [];
         this.tasks = [];
         this.loadTasksFromStorage();
+        this.currentSortCriteria = null;
+        this.currentSortDirection = true; // true for ascending
+
+        // if tasks local storage is empty generate Sameple tasks
         if (this.tasks.length === 0) {
-            this.generateSampleTasks(); // Generate sample tasks if local storage is empty
+            this.generateSampleTasks();
             this.saveTasksToStorage();  // Save the sample tasks to local storage
         }
     }
@@ -135,42 +139,77 @@ class TaskManager {
         return [...new Set(this.tasks.map(task => task.project))];
     }
 
-    updateTask(id, updatedTask) {
-        console.log('Updating Task ID:', id); 
-        const taskIndex = this.tasks.findIndex(task => task.id === id);
-        if (taskIndex !== -1) {
-            this.tasks[taskIndex] = { ...this.tasks[taskIndex], ...updatedTask };
-            this.saveTasksToStorage();
-            this.notifySubscribers();
+    
+        updateTask(id, updatedTask) {
+            const taskIndex = this.tasks.findIndex(task => task.id === id);
+            if (taskIndex !== -1) {
+                this.tasks[taskIndex] = { ...this.tasks[taskIndex], ...updatedTask };
+                
+                // Re-apply current sort if exists
+                if (this.currentSortCriteria) {
+                    this.sortTasks(this.currentSortCriteria, this.currentSortDirection);
+                }
+                
+                this.saveTasksToStorage();
+                this.notifySubscribers();
+            }
         }
-    }
 
-    sortTasks(criteria, ascending = true) {
-        const direction = ascending ? 1 : -1; // If ascending is true, direction is 1; if false, direction is -1
+        sortTasks(criteria, ascending = true) {
+            const direction = ascending ? 1 : -1;
+    
+            this.tasks.sort((a, b) => {
+                // Always sort by done status first (unchecked/false comes before checked/true)
+                const aDone = a.done !== undefined ? a.done : false;
+                const bDone = b.done !== undefined ? b.done : false;
+                
+                if (aDone !== bDone) {
+                    return aDone - bDone; // This will always put unchecked items first
+                }
+    
+                // If done status is the same, sort by the selected criteria
+                switch (criteria) {
+                    case 'name':
+                        return direction * a.title.localeCompare(b.title);
+                    case 'priority':
+                        return direction * (parseInt(a.priority) - parseInt(b.priority));
+                    case 'dueDate':
+                        return direction * (new Date(a.dueDate) - new Date(b.dueDate));
+                    case 'project':
+                        return direction * a.project.localeCompare(b.project);
+                    default:
+                        return 0;
+                }
+            });
+        }
 
-        this.tasks.sort((a, b) => {
-            // Ensure that 'done' exists, otherwise use false (or handle the case in another way)
-            const aDone = a.done !== undefined ? a.done : false;
-            const bDone = b.done !== undefined ? b.done : false;
+        sortWithoutReversing(criteria) {
+            this.tasks.sort((a, b) => {
+                // Primary sorting by done status
+                const aDone = a.done !== undefined ? a.done : false;
+                const bDone = b.done !== undefined ? b.done : false;
+        
+                if (aDone !== bDone) {
+                    return aDone - bDone; // Unchecked (false) comes first without reversing
+                }
+        
+                // Secondary sorting by selected criterion if done statuses are the same
+                switch (criteria) {
+                    case 'name':
+                        return a.title.localeCompare(b.title); // Default ascending without reversing
+                    case 'priority':
+                        return parseInt(a.priority) - parseInt(b.priority);
+                    case 'dueDate':
+                        return new Date(a.dueDate) - new Date(b.dueDate);
+                    case 'project':
+                        return a.project.localeCompare(b.project);
+                    default:
+                        return 0;
+                }
+            });
+        }
+        
 
-            if (criteria === 'done') {
-                return direction * (aDone - bDone); // Sorting based on done status
-            }
-
-            switch (criteria) {
-                case 'name':
-                    return direction * a.title.localeCompare(b.title); // Sorting alphabetically by task name
-                case 'priority':
-                    return direction * (parseInt(a.priority) - parseInt(b.priority)); // Sorting by priority
-                case 'dueDate':
-                    return direction * (new Date(a.dueDate) - new Date(b.dueDate)); // Sorting by due date
-                case 'project':
-                    return direction * a.project.localeCompare(b.project); // Sorting by project name
-                default:
-                    return 0; // No sorting if criteria doesn't match
-            }
-        });
-    }
     
 }
 

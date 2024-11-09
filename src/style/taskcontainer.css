@@ -1,14 +1,16 @@
+/* Task Container Styles */
 .task-container {
     display: flex;
-    border: 1px solid #ccc;
+    border: 1px solid var(--primary-dark); /* Soft border in the primary dark theme color */
     border-radius: 8px;
-    background-color: #f9f9f9;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: var(--task-bg); /* Soft pastel background */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
     padding-left: 20px;
     width: 95%;
     overflow: hidden;
 }
 
+/* Text Wrapper */
 .text-wrapper {
     display: flex;
     align-items: center;
@@ -27,6 +29,7 @@
 
 .task-project {
     font-size: 0.9rem;
+    color: #555; /* Keeping the label color as requested */
 }
 
 /* Description - Limit size */
@@ -60,7 +63,7 @@
 
 /* Buttons (Edit, Delete, Details) */
 button {
-    background-color: #4CAF50;
+    background-color: #4CAF50; /* Green button for edit */
     color: white;
     padding: 8px 15px;
     border: none;
@@ -70,38 +73,38 @@ button {
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: #45a049; /* Slightly darker green for hover */
 }
 
 button.delete-button {
-    background-color: #f44336;
+    background-color: #f44336; /* Red button for delete */
 }
 
 button.delete-button:hover {
-    background-color: #e53935;
+    background-color: #e53935; /* Darker red on hover */
 }
 
 button.details-button {
-    background-color: #2196F3;
+    background-color: #2196F3; /* Blue button for details */
 }
 
 button.details-button:hover {
-    background-color: #1976d2;
+    background-color: #1976d2; /* Darker blue on hover */
 }
 
-
-/*this is for the priority borders*/
+/* Priority Borders */
 .task-priority-low {
-    border-left: 4px solid green;
-    background-color: #e0f7e9;
+    border-left: 4px solid #7cb342; 
+    /* background-color: #d0f0c0;  */
 }
 
 .task-priority-medium {
-    border-left: 4px solid orange;
-    background-color: #fff3cd;
+    border-left: 4px solid #fbc02d; 
+    /* background-color: #fff9c4;  */
 }
 
 .task-priority-high {
-    border-left: 4px solid red;
-    background-color: #f8d7da;
+    border-left: 4px solid #e57373;
+    /* background-color: #ffcccb;  */
 }
+
