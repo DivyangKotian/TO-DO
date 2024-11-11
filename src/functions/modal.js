@@ -106,7 +106,7 @@ class Modal {
         document.getElementById('details-title').textContent = task.title;
         document.getElementById('details-description').textContent = task.description;
         document.getElementById('details-priority').textContent = this.uiElements.getPriorityLabel(task.priority);
-        document.getElementById('details-due-date').textContent = task.dueDate.toLocaleDateString();
+        document.getElementById('details-due-date').textContent = new Date(task.dueDate).toLocaleDateString();
         document.getElementById('details-project').textContent = task.project;
         
         modal.classList.add('visible');

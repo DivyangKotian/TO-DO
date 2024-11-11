@@ -246,7 +246,7 @@ class TaskRender {
     doneCheckboxChangeHandler(task, doneCheckbox) {
         task.done = doneCheckbox.checked;
     
-        // Delay sorting by 700ms (letting the checkbox animation play)
+        // Delay sorting by 500ms (letting the checkbox animation play)
         setTimeout(() => {
             this.taskManager.sortTasks(this.currentSortCriteria, this.sortOrder[this.currentSortCriteria]); // Sort tasks after delay
             // Update task after done status change
@@ -254,7 +254,7 @@ class TaskRender {
             
             // Update task counts in the sidebar
             this.sidebar.updateAllCounts();
-        }, 700);                        
+        }, 500);                        
         
     }
     

@@ -1,13 +1,17 @@
 /* Define default variables for pastel violet theme */
 :root {
-    --background-color: #f4f0f9; /* Light lavender */
-    --text-color: #4b2e83; /* Dark violet */
-    --primary-dark: #6c4f99; /* Soft violet */
-    --sidebar-bg: #a49ab2; /* Pastel lavender-gray */
-    --task-bg: #e8d9f3; /* Light pastel violet */
-    --footer-bg: #b4a0d3; /* Soft lavender */
+    --background-color: #133E55; /* Light lavender */
+    --text-color: #1f3655; /* Dark violet */
+    --primary-dark: #7E89A7; /* Soft violet */
+    --sidebar-bg: #F2EFEA; /* Pastel lavender-gray */
+    --sortbar-bg: #F2EFEA;
+    --task-bg: #F2EFEA; /* Light pastel violet */
+    --footer-bg: #133E55; /* Soft lavender */
 }
 
+
+
+/*for future use if i implement a dark and light theme*/
 /* Dark theme colors */
 [data-theme="dark"] {
     --background-color: #333;

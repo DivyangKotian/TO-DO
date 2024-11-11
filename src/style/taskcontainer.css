@@ -1,12 +1,12 @@
 /* Task Container Styles */
 .task-container {
     display: flex;
-    border: 1px solid var(--primary-dark); /* Soft border in the primary dark theme color */
+    align-items: center;
     border-radius: 8px;
     background-color: var(--task-bg); /* Soft pastel background */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3); /* Subtle shadow */
     padding-left: 20px;
-    width: 95%;
+    width: 90%;
     overflow: hidden;
 }
 
@@ -14,42 +14,51 @@
 .text-wrapper {
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+    max-height: 1.4rem;
 }
 
 /* Title and Project */
 .task-title {
     font-size: 1.2rem;
     font-weight: bold;
-    width: clamp(5rem,10rem,15rem); /* Limit Title height */
-    max-height: 1.5rem;
+    width: clamp(5rem,8rem,13rem);
+    max-height: 1.4rem;
     overflow: hidden; /* Hide overflow */
     text-overflow: hidden; /* Show ellipsis for overflowed text */
-    line-height: 1.5;
 }
 
 .task-project {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     color: #555; /* Keeping the label color as requested */
+    width: 6rem;
+    overflow: hidden;
+    max-height:1rem ;
+    text-align: end;
+    font-weight: bold;
 }
 
 /* Description - Limit size */
 .task-description {
-    font-size: 1rem;
-    width: clamp(5rem,15rem,20rem); /* Limit description height */
-    max-height: 1.5rem;
+    font-size: 0.6rem;
+    width: 11rem;
     overflow: hidden; /* Hide overflow */
-    text-overflow: hidden; /* Show ellipsis for overflowed text */
-    line-height: 1.5;
+    text-overflow: hidden;
+    line-height: 1.3;
+    font-weight: bold;
 }
 
 /* Priority and Date */
 .task-priority {
-    font-size: 1rem;
+    font-size: 0.7rem;
     font-weight: bold;
+    width: 2rem;
+    text-align: center;
 }
 
 .task-date {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
 }
 
 .done-wrapper {
@@ -61,9 +70,15 @@
     margin-right: 10px;
 }
 
+.button-wrapper{
+    display: flex;
+    justify-content: space-evenly;
+    gap: 20px;
+}
+
 /* Buttons (Edit, Delete, Details) */
 button {
-    background-color: #4CAF50; /* Green button for edit */
+    background-color: #133E55; 
     color: white;
     padding: 8px 15px;
     border: none;
@@ -73,38 +88,36 @@ button {
 }
 
 button:hover {
-    background-color: #45a049; /* Slightly darker green for hover */
+    background-color: #54C1DF; 
 }
 
 button.delete-button {
-    background-color: #f44336; /* Red button for delete */
+    background-color: #133E55; 
 }
 
 button.delete-button:hover {
-    background-color: #e53935; /* Darker red on hover */
+    background-color: #54C1DF; 
 }
 
 button.details-button {
-    background-color: #2196F3; /* Blue button for details */
+    background-color: #1f3655; 
 }
 
 button.details-button:hover {
-    background-color: #1976d2; /* Darker blue on hover */
+    background-color: #54C1DF; 
 }
 
 /* Priority Borders */
 .task-priority-low {
-    border-left: 4px solid #7cb342; 
-    /* background-color: #d0f0c0;  */
+    border-left: 6px solid #5ba46a; 
+
 }
 
 .task-priority-medium {
-    border-left: 4px solid #fbc02d; 
-    /* background-color: #fff9c4;  */
+    border-left: 6px solid #d89432; 
 }
 
 .task-priority-high {
-    border-left: 4px solid #e57373;
-    /* background-color: #ffcccb;  */
+    border-left: 6px solid #f44336;
 }
 

@@ -3,13 +3,18 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    margin-top: 4rem;
+    margin-bottom: 0.5rem;
     padding: 10px;
-    background-color: var(--sidebar-bg); /* Soft pastel lavender */
+    background-color: var(--sortbar-bg); /* Soft pastel lavender */
     border-bottom: 1px solid var(--primary-dark); /* Subtle border for separation */
     font-size: 14px;
     font-weight: bold;
     color: var(--text-color); /* Ensure text color matches theme */
-    border-radius: 8px 8px 0 0; /* Rounded corners for the top of the container */
+    border-radius: 8px;
+    width: 90%;
+    height: 3.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5); /* Subtle shadow */
 }
 
 /* Sort Item Styles */
@@ -27,19 +32,6 @@
     transform: scale(1.05); /* Slight scale effect for interactivity */
 }
 
-/* Active Sort Indicator */
-.sort-asc::after {
-    content: ' ▲'; /* Arrow for ascending sort */
-    font-size: 12px;
-    color: var(--primary-dark); /* Arrow color to match the theme */
-}
-
-.sort-desc::after {
-    content: ' ▼'; /* Arrow for descending sort */
-    font-size: 12px;
-    color: var(--primary-dark); /* Arrow color to match the theme */
-}
-
 /* Task Container Layout */
 .task-container {
     padding-top: 20px; /* To make space for the sort bar */
@@ -51,13 +43,8 @@
 }
 
 .sort-priority {
-    margin-left: 26rem;
+    margin-left: 17rem;
 }
-
-.sort-duedate {
-    margin-left: 0.5rem;
-}
-
-.sort-project {
-    margin-left: 1rem;
+.sort-project{
+    margin-left: 0.6rem;
 }

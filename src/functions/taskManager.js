@@ -33,20 +33,27 @@ class TaskManager {
 
     generateSampleTasks() {
         const sampleTasks = [
-            new Task('Task 1', 'Description 1', '2023-12-01', '1', 'Project A', false),
-            new Task('Task 2', 'Description 2', '2023-12-10', '2', 'Project B', false),
-            new Task('Task 3', 'Description 3', '2024-01-05', '3', 'Project C', true),
-            new Task('Task 4', 'Description 4', '2024-02-15', '2', 'Project A', false),
-            new Task('Task 5', 'Description 5', '2024-03-10', '1', 'Project B', false),
-            new Task('Task 6', 'Description 6', '2024-04-20', '3', 'Project C', true),
-            new Task('Task 7', 'Description 7', '2024-05-01', '2', 'Project A', false),
-            new Task('Task 8', 'Description 8', '2024-05-15', '1', 'Project B', true),
-            new Task('Task 9', 'Description 9', '2024-06-25', '3', 'Project C', false),
-            new Task('Task 12', 'Description 12', '2024-09-10', '3', 'Project C', false),
-            new Task('Task 10', 'Description 10', '2024-07-30', '1', 'Project A', true),
-            new Task('Task 11', 'Description 11', '2024-08-05', '2', 'Project B', false),
-            new Task('Task 13', 'Description 13', '2024-10-15', '1', 'Project A', true),
-            new Task('Task 14', 'Description 14', '2024-11-01', '2', 'Project B', false)
+            new Task('Sketch Concept for Thesis Project', 'Initial sketches for thesis on sustainable design', '2024-11-11', '1', 'University', false),
+            new Task('3D Model of Campus Library', 'Develop a 3D model of the library for portfolio', '2024-11-13', '2', 'Work', false),
+            new Task('Site Visit to Construction Site', 'Document progress and take notes for studio report', '2024-11-20', '3', 'University', true),
+            new Task('Client Presentation Prep', 'Prepare presentation slides for client meeting', '2024-11-30', '2', 'Work', false),
+            new Task('Gather References for Studio Project', 'Collect architectural references and case studies', '2024-12-05', '1', 'University', false),
+            new Task('Portfolio Update', 'Update portfolio with latest renders and design drafts', '2024-12-15', '3', 'Career', true),
+            new Task('Design Review Meeting', 'Present progress on site analysis to review board', '2025-01-10', '2', 'University', false),
+            new Task('Research New Building Materials', 'Explore eco-friendly materials for sustainable design', '2025-01-20', '1', 'HomeWork', true),
+            new Task('Render Final Design', 'Create high-quality renderings for studio submission', '2025-02-01', '3', 'University', false),
+            new Task('Site Documentation', 'Document elevations, plans, and sections on site', '2025-03-10', '3', 'Work', false),
+            new Task('Prepare CAD Drawings for Renovation Project', 'Finish CAD layouts and sections for renovation', '2025-04-05', '1', 'Work', true),
+            new Task('Sketch Details for Custom Furniture', 'Develop hand sketches for custom furniture design', '2025-04-20', '2', 'HomeWork', false),
+            new Task('Research Internship Opportunities', 'Look up potential internships in architectural firms', '2025-05-15', '1', 'Career', true),
+            new Task('Meet with Thesis Advisor', 'Discuss progress and next steps for thesis project', '2025-06-01', '2', 'University', false),
+            new Task('Organize Bedroom Closet', 'Sort clothes, donate what’s not needed, and create a new storage system', '2024-11-12', '1', 'Personal', false),
+            new Task('Meal Prep for the Week', 'Plan, cook, and store healthy meals for the upcoming week', '2024-11-14', '2', 'Personal', false),
+            new Task('Monthly Budget Review', 'Assess last month’s expenses, adjust budget for upcoming needs', '2024-11-18', '3', 'Personal', true),
+            new Task('Deep Clean Kitchen', 'Clean appliances, countertops, and cupboards; scrub sink and floors', '2024-11-21', '2', 'Personal', false),
+            new Task('Start a New Book', 'Pick a new book and read at least two chapters this week', '2024-11-25', '1', 'Personal', false),
+            new Task('Organize Digital Files', 'Sort through old files, delete duplicates, and back up important documents', '2024-12-05', '3', 'Personal', true)
+            
         ];
         this.tasks.push(...sampleTasks);
     }

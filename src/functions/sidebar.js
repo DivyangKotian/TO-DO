@@ -40,6 +40,7 @@ class SideBar {
     initialize() {
         this.setupTimeBasedFilters();
         this.updateProjectList();
+        this.updateAllCounts();
         // Set initial active tab
         const allTasksTab = document.querySelector(this.filterConfigs.all.selector);
         if (allTasksTab) {

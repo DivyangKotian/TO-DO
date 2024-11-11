@@ -1,10 +1,37 @@
 /* Sidebar Styling */
 .side-bar {
-    overflow: visible; /* Ensure the list items are not hidden */
-    padding: 20px;
+    overflow: scroll; 
+    margin: 4rem;
+    padding-top: 30px;
     background-color: var(--sidebar-bg); /* Soft pastel lavender-gray */
-    border-radius: 8px; /* Rounded corners for the sidebar */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    border-radius: 15px; /* Rounded corners for the sidebar */
+    box-shadow: 0 5px 8px rgba(0, 0, 0, 0.7); /* Subtle shadow */
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+.side-bar::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+.time-based, .project-based{
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    width: 100%;
+}
+
+.time-based>li, .project-based>li{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    gap: 0.8rem;
+    width: 100%;
+    border-bottom: 1px solid var(--primary-dark);
 }
 
 /* Active state for sidebar items */
@@ -12,50 +39,60 @@
     background-color: var(--primary-dark); /* Darker violet for active items */
     font-weight: bold;
     color: var(--background-color); /* Light text color for contrast */
-    border-radius: 5px; /* Rounded corners for active item */
     padding: 5px 10px;
     transition: background-color 0.3s ease, transform 0.2s ease;
+    width: 100%;
 }
 
 /* Task name styling */
-.task-name {
+.task-name, .task-count {
     cursor: pointer;
-    color: var(--text-color);
+    font-weight: bold;
     font-size: 1rem;
-    transition: color 0.3s;
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.task-name:hover {
+.new-task{
+    height: 3rem;
+    font-size: 2rem;
+    font-weight: bold;
+    border-radius: 0px;
+}
+
+.time-based> *:hover {
     color: var(--primary-dark); /* Change color on hover for better UX */
+    background-color: var(--primary-dark);
 }
 
 /* Project item styling */
 .project-items,
 .project-item {
     cursor: pointer;
+    font-weight: bold;
     font-size: 1rem;
     color: var(--text-color);
-    padding: 5px 10px;
-    border-radius: 5px; /* Rounded corners */
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Active state for project items */
-.project-item.active {
-    background-color: var(--primary-dark); /* Darker violet for active project */
-    color: var(--background-color); /* Light text for contrast */
+.project-item .active {
+    background-color: var(--primary-dark); /* Darker violet for active items */
     font-weight: bold;
+    color: var(--background-color); /* Light text color for contrast */
+    padding: 5px 10px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: 100%;
 }
 
 /* Hover effect for project items */
 .project-item:hover {
-    background-color: #f1e1f7; /* Light lavender hover effect */
-    color: var(--primary-dark); /* Change text color on hover */
+    background-color: var(--primary-dark);
 }
 
 /* Optional: Add hover effect to active items */
-.project-item.active:hover {
-    background-color: var(--primary-dark);
-    color: var(--background-color);
-    transform: scale(1.05); /* Slight scale effect on hover to make it stand out */
+
+
+.side-bar> ul{
+    list-style:none;
 }
